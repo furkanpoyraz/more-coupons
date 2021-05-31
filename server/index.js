@@ -24,8 +24,6 @@ const findDocuments = function(db, callback) {
     // Find some documents
     collection.find({}).toArray(function(err, docs) {
         assert.strictEqual(err, null);
-        console.log('Found the following records');
-        console.log(docs);
         callback(docs);
     });
 };
