@@ -11,6 +11,8 @@ app.use(function (req, res, next) {
   
     next();
 });
+app.use(express.json());
+app.use(express.urlencoded());
 
 const mongoConf = {
     url: "mongodb://root:rootpassword@localhost:27017",
@@ -18,28 +20,44 @@ const mongoConf = {
     settings: { useNewUrlParser: true, useUnifiedTopology: true }
 }
 
-const findDocuments = function(db, callback) {
-    // Get the documents collection
+const findCoupons = function(db, callback) {
+    // Get the coupons collection
     const collection = db.collection('coupons');
-    // Find some documents
+    // Find some coupons
     collection.find({}).toArray(function(err, docs) {
         assert.strictEqual(err, null);
         callback(docs);
     });
 };
 
+const insertCoupon = function(db, item, callback) {
+    // Get the coupons collection
+    const collection = db.collection('coupons');
+    // Insert some coupons
+    collection.insertOne(item, function(err, result) {
+        assert.equal(err, null);
+        console.log('Inserted 1 coupon into the collection');
+        callback(result);
+    });
+};
+
 mongoClient.connect(mongoConf.url, mongoConf.settings, function(err, client) {
     if (err) throw err;
+
+    const db = client.db(mongoConf.db);
     console.log("Connected to database!");
 
     app.get('/coupons', function (req, res) {
-
-        const db = client.db(mongoConf.db);
-
-        findDocuments(db, function(docs) {
+        findCoupons(db, function(docs) {
             res.send(docs);
         });
+    });
 
+    app.post('/coupons', function (req, res) {
+        const item = req.body;
+        insertCoupon(db, item, function(docs) {
+            res.send(docs);
+        });
     });
 });
 

@@ -8,7 +8,7 @@ import {
   Route
 } from "react-router-dom";
 
-import Navbar from './components/Navbar';
+import Navigation from './components/Navigation';
 import Home from './components/Home';
 import Panel from './components/Panel';
 
@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="app">
       <Router>
-        <Navbar />
+        <Navigation />
         <Switch>
           <Route path="/panel">
             <Panel />
