@@ -12,10 +12,10 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 const mongoConf = {
-    url: "mongodb://root:rootpassword@localhost:27017",
+    url: "mongodb://localhost:27017",
     db: 'more-coupons',
     settings: { useNewUrlParser: true, useUnifiedTopology: true }
 }
@@ -35,7 +35,6 @@ const insertCoupon = function(db, item, callback) {
     const collection = db.collection('coupons');
     // Insert some coupons
     collection.insertOne(item, function(err, result) {
-        assert.equal(err, null);
         console.log('Inserted 1 coupon into the collection');
         callback(result);
     });
