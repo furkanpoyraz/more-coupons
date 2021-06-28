@@ -1,4 +1,5 @@
 const mongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
 const assert = require('assert');
 const express = require('express');
 const app = express();
@@ -20,11 +21,11 @@ const mongoConf = {
     settings: { useNewUrlParser: true, useUnifiedTopology: true }
 }
 
-const findCoupons = function(db, callback) {
+const findCoupons = function(db, query, callback) {
     // Get the coupons collection
     const collection = db.collection('coupons');
     // Find some coupons
-    collection.find({}).toArray(function(err, docs) {
+    collection.find(query).toArray(function(err, docs) {
         assert.strictEqual(err, null);
         callback(docs);
     });
@@ -40,6 +41,16 @@ const insertCoupon = function(db, item, callback) {
     });
 };
 
+const removeCoupon = function(db, query, callback) {
+    // Get the coupons collection
+    const collection = db.collection('coupons');
+    // Delete coupon matching query
+    collection.deleteOne(query, function(err, result) {
+        console.log('Removed the matching document');
+        callback(result);
+    });
+};
+
 mongoClient.connect(mongoConf.url, mongoConf.settings, function(err, client) {
     if (err) throw err;
 
@@ -47,14 +58,28 @@ mongoClient.connect(mongoConf.url, mongoConf.settings, function(err, client) {
     console.log("Connected to database!");
 
     app.get('/coupons', function (req, res) {
-        findCoupons(db, function(docs) {
+        findCoupons(db, {}, function(docs) {
             res.send(docs);
         });
     });
 
     app.post('/coupons', function (req, res) {
-        const item = req.body;
-        insertCoupon(db, item, function(docs) {
+        let coupon = req.body;
+        insertCoupon(db, coupon, function(docs) {
+            res.send(docs);
+        });
+    });
+
+    app.get('/coupons/:code', function (req, res) {
+        let code = req.params.code;
+        findCoupons(db, {code: code}, function(docs) {
+            res.send(docs);
+        });
+    });
+
+    app.delete('/coupons/:id', function (req, res) {
+        let id = new ObjectID(req.params.id);
+        removeCoupon(db, {_id: id}, function(docs) {
             res.send(docs);
         });
     });

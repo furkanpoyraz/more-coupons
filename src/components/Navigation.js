@@ -10,10 +10,10 @@ function Navigation() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <NavLink to="/" activeClassName="active" className="nav-link">Home</NavLink>
+                            <NavLink to="/" className="nav-link">Home</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink to="/panel" activeClassName="active" className="nav-link">Panel</NavLink>
+                            <NavLink to="/panel" className="nav-link">Panel</NavLink>
                         </li>
                     </ul>
                 </Navbar.Collapse>
