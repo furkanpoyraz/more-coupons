@@ -37,7 +37,7 @@ function CheckCoupon() {
     <div className="container">
       <div className="row">
         <div className="col-sm-4 offset-sm-4">
-          <form noValidate onSubmit={handleSubmit(onSubmit)}>
+          <Form noValidate onSubmit={handleSubmit(onSubmit)}>
             <Form.Group controlId="formCode">
               <Form.Label>Coupon</Form.Label>
               <InputGroup className="mb-3" hasValidation>
@@ -49,7 +49,7 @@ function CheckCoupon() {
               </InputGroup>
             </Form.Group>
             <Button type="submit" variant="primary">Check Coupon</Button>
-          </form>
+          </Form>
         </div>
       </div>
       <div className="row">

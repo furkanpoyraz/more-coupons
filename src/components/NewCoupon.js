@@ -49,13 +49,13 @@ function NewCoupon() {
   return (
     <>
       <Button variant="primary" className="float-end mb-4" onClick={handleShow}>+ Add Coupon</Button>
-      <Modal show={show} onHide={handleClose} animation={false}>
-        <form noValidate onSubmit={handleSubmit(onSubmit)}>
+      <Modal show={show} onHide={handleClose}>
+        <Form noValidate onSubmit={handleSubmit(onSubmit)}>
           <Modal.Header closeButton>
             <Modal.Title>New Coupon</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            { success && <Alert variant="success">Success!</Alert> }
+            { success && <Alert variant="success" onClose={() => setSuccess(false)} dismissible>Success!</Alert> }
               <Form.Group controlId="formCode">
                 <Form.Label>Code</Form.Label>
                 <InputGroup className="mb-3" hasValidation>
@@ -77,7 +77,7 @@ function NewCoupon() {
             <Button variant="secondary" type="button" onClick={handleClose}>Close</Button>
             <Button variant="primary" type="submit">Add Coupon</Button>
           </Modal.Footer>
-        </form>
+        </Form>
       </Modal>
     </>
   )
